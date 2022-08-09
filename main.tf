@@ -29,7 +29,7 @@ module "EC2-Primary" {
   key_name            =     var.key_name
   ami_id              =     var.ami_id
   instance_type       =     var.instance_type
-  tag                 =     "Rahul-Mongo-P"
+  tag                 =     "Rahul_Mongo_P"
   script_path         =     var.script_path
 }
 
@@ -40,7 +40,7 @@ module "EC2-Secondary1" {
   key_name            =     var.key_name
   ami_id              =     var.ami_id
   instance_type       =     var.instance_type
-  tag                 =     "Rahul-Mongo-S1"
+  tag                 =     "Rahul_Mongo_S1"
   script_path         =     var.script_path
 }
 
@@ -51,6 +51,17 @@ module "EC2-Secondary2" {
   key_name            =     var.key_name
   ami_id              =     var.ami_id
   instance_type       =     var.instance_type
-  tag                 =     "Rahul-Mongo-S2"
+  tag                 =     "Rahul_Mongo_S2"
   script_path         =     var.script_path
+}
+
+resource "null_resource" "ansible" {
+  depends_on = [
+    module.EC2-Primary,
+    module.EC2-Secondary1,
+    module.EC2-Secondary2
+  ]
+  provisioner "local-exec" {
+    command = "ansible-playbook ansible.yml"
+  }
 }

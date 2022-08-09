@@ -1,0 +1,49 @@
+- hosts: tag_Name_Rahul_Mongo_P
+  gather_facts: no
+  tasks:
+        - name: Copy MongoDB Configuration file
+          copy :
+            src : /root/squareOps/ansible/mongodb/MongoDB_Automation/mongod.conf
+            dest : /etc/mongod.conf
+
+        - name: Restart MongoD service
+          service:
+            name : mongod
+            state : restarted
+            enabled : yes
+
+- hosts: tag_Name_Rahul_Mongo_S1
+  gather_facts: no
+  tasks:
+        - name: Copy MongoDB Configuration file
+          copy :
+            src : /root/squareOps/ansible/mongodb/MongoDB_Automation/mongod.conf
+            dest : /etc/mongod.conf
+
+        - name: Restart MongoD service
+          service:
+            name : mongod
+            state : restarted
+            enabled : yes
+
+- hosts: tag_Name_Rahul_Mongo_S2
+  gather_facts: no
+  tasks:
+        - name: Copy MongoDB Configuration file
+          copy :
+            src : /root/squareOps/ansible/mongodb/MongoDB_Automation/mongod.conf
+            dest : /etc/mongod.conf
+
+        - name: Restart MongoD service
+          service:
+            name : mongod
+            state : restarted
+            enabled : yes
+
+
+- hosts: tag_Name_Rahul_Mongo_P
+  gather_facts: no
+  tasks:
+        - name: Initialize Replica set on Primary
+          community.mongodb.mongodb_shell:
+            eval: "rs.initiate()"
