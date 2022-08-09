@@ -55,11 +55,27 @@ module "EC2-Secondary2" {
   script_path         =     var.script_path
 }
 
-resource "null_resource" "ansible" {
+resource "null_resource" "get_ip" {
   depends_on = [
     module.EC2-Primary,
     module.EC2-Secondary1,
     module.EC2-Secondary2
+  ]
+  provisioner "local-exec" {
+    command = "sed -i 's/secondary1_public_ip/'${module.EC2-Secondary1.instance_private_ip}'/' ansible.yml"
+  }
+  provisioner "local-exec" {
+    command = "sed -i 's/secondary2_public_ip/'${module.EC2-Secondary2.instance_private_ip}'/' ansible.yml"
+  }
+}
+
+
+resource "null_resource" "ansible" {
+  depends_on = [
+    module.EC2-Primary,
+    module.EC2-Secondary1,
+    module.EC2-Secondary2,
+    null_resource.get_ip
   ]
   provisioner "local-exec" {
     command = "ansible-playbook ansible.yml"

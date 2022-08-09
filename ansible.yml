@@ -1,6 +1,11 @@
+
 - hosts: tag_Name_Rahul_Mongo_P
   gather_facts: no
   tasks:
+        - name: Sleep for 180 seconds and continue with play
+          ansible.builtin.wait_for:
+            timeout: 180
+          delegate_to: localhost
         - name: Copy MongoDB Configuration file
           copy :
             src : /root/squareOps/ansible/mongodb/MongoDB_Automation/mongod.conf
@@ -47,3 +52,11 @@
         - name: Initialize Replica set on Primary
           community.mongodb.mongodb_shell:
             eval: "rs.initiate()"
+
+        - name: Add members to primary instance
+          community.mongodb.mongodb_shell:
+            eval: "rs.add('secondary1_public_ip:27017')"
+ 
+        - name: Add members to primary instance
+          community.mongodb.mongodb_shell:
+            eval: "rs.add('secondary2_public_ip:27017')"
