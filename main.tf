@@ -11,13 +11,13 @@ terraform {
 
 // Define provider
 provider "aws" {
-  profile            =    ""
+  profile            =    "sqops"
   region             =    var.region
 }
 
 
 module "mySecurity" { 
-  source             =    "./Security Group"
+  source             =    "./SecurityGroup"
   tag                =    var.tag
   vpc_id             =    var.vpc_id
 }
