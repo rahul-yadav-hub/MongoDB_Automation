@@ -62,10 +62,13 @@ resource "null_resource" "get_ip" {
     module.EC2-Secondary2
   ]
   provisioner "local-exec" {
-    command = "sed -i 's/secondary1_public_ip/'${module.EC2-Secondary1.instance_private_ip}'/' ansible.yml"
+    command = "sed -i 's/primary_public_ip/'${module.EC2-Primary.instance_public_ip}'/' ansible.yml"
   }
   provisioner "local-exec" {
-    command = "sed -i 's/secondary2_public_ip/'${module.EC2-Secondary2.instance_private_ip}'/' ansible.yml"
+    command = "sed -i 's/secondary1_private_ip/'${module.EC2-Secondary1.instance_private_ip}'/' ansible.yml"
+  }
+  provisioner "local-exec" {
+    command = "sed -i 's/secondary2_private_ip/'${module.EC2-Secondary2.instance_private_ip}'/' ansible.yml"
   }
 }
 
